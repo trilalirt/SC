@@ -4,8 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,7 +32,7 @@ import android.widget.FrameLayout;
 public class MainActivity extends Activity {
 
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-	public static final int MEDIA_TYPE_IMAGE = 1;
+	//public static final int MEDIA_TYPE_IMAGE = 1;
 	private Uri fileUri;
 	private CameraPreview mPreview;
 	private Camera mCamera;
@@ -42,19 +45,21 @@ public class MainActivity extends Activity {
 		@Override
 	    public void onPictureTaken(byte[] data, Camera camera) {
 
-	        File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
+	        File pictureFile = getOutputMediaFile();
 	        if (pictureFile == null){
 	            Log.d(TAG, "Error creating media file, check storage permissions: " );
 	            return;
 	        }
 
-	        try {
+	       try {
 	            FileOutputStream fos = new FileOutputStream(pictureFile);
 	            fos.write(data);
 	            fos.close();
-	        } catch (FileNotFoundException e) {
-	            Log.d(TAG, "File not found: " + e.getMessage());
-	        } catch (IOException e) {
+	        } 
+	        catch (FileNotFoundException e) {
+	            Log.d(TAG, "File not found:  " + e.getMessage());
+	        } 
+	       catch (IOException e) {
 	            Log.d(TAG, "Error accessing file: " + e.getMessage());
 	        }
 	    }
@@ -66,17 +71,17 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
         setContentView(R.layout.activity_main);
                
         // is there is a cam
         checkCameraHardware(getApplicationContext());
         
-        WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_OFF;
-        getWindow().setAttributes(params);
+        //WindowManager.LayoutParams params = getWindow().getAttributes();
+        //params.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_OFF;
+        //getWindow().setAttributes(params);
        
     }
 	
@@ -101,6 +106,8 @@ public class MainActivity extends Activity {
 	   if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) { 
 	       
 		   mCamera.takePicture(null, null, mPicture);
+		   
+		  
 		   
 	       return true;
 	   } else {
@@ -140,15 +147,15 @@ public class MainActivity extends Activity {
 //	}
 
 	/** Create a File for saving an image */
-	private static File getOutputMediaFile(int type){
-	    
+	//private static File getOutputMediaFile(int type){
+    private static File getOutputMediaFile(){  
 		// To be safe, you should check that the SDCard is mounted
 	    // using Environment.getExternalStorageState() before doing this.
-
-	    File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "SpyCamera");
-		//File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "SpyCamera"); 
+	    //File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "SpyCamera");
 		
-	    // This location works best if you want the created images to be shared
+    	File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "SpyCamera3"); 
+
+		// This location works best if you want the created images to be shared
 	    // between applications and persist after your app has been uninstalled.
 	    // Create the storage directory if it does not exist
 	    
@@ -161,13 +168,21 @@ public class MainActivity extends Activity {
 	    }
 	    
 	 // Create a media file name
-	    Calendar c = Calendar.getInstance(); 
-	    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	    String timeStamp =  df.format(c.getTime());
+	   // Calendar c = Calendar.getInstance(); 
+	    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss");
+	    //String timeStamp =  df.format(c.getTime());
+	    String timeStamp =  df.format(new Date());
+	    //String timeStamp =  df.format(new Date());
+	    
+	    Random r = new Random();
+	    int i1=r.nextInt(1000);
+	    String s = String.valueOf(i1);
 	    
 	    File mediaFile;
-	    mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_"+ timeStamp + ".jpg");
-	   
+	    //mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_"+ timeStamp + ".jpg");
+	    //mediaFile = new File(mediaStorageDir.getPath() + "/IMG_"+ timeStamp + ".jpg");
+	    
+	    mediaFile = new File(mediaStorageDir.getPath()  + "/" + timeStamp + "IMG.jpg");
 	    return mediaFile;
 	}
 	

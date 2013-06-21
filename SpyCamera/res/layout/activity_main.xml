@@ -13,8 +13,8 @@
     
     <FrameLayout
     android:id="@+id/camera_preview"
-    android:layout_width="1dp"
-    android:layout_height="1dp"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
     />
 
 </RelativeLayout>
