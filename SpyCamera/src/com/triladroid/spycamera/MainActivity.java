@@ -62,6 +62,13 @@ public class MainActivity extends Activity {
 	       catch (IOException e) {
 	            Log.d(TAG, "Error accessing file: " + e.getMessage());
 	        }
+	       finally {
+	           //camera.release();
+	           //camera = null;
+	           startActivity(new Intent(MainActivity.this, MainActivity.class));
+	           finish();
+	         }
+	       
 	    }
 	};
 	
@@ -71,7 +78,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
         setContentView(R.layout.activity_main);
