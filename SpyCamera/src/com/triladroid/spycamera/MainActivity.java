@@ -13,7 +13,6 @@ import java.util.Random;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Context;
@@ -37,7 +36,6 @@ public class MainActivity extends Activity {
 	private Uri fileUri;
 	private CameraPreview mPreview;
 	private Camera mCamera;
-	private static boolean isinproc = false;
 	
 	// this is where we write our pic to destination file
 	private PictureCallback mPicture = new PictureCallback() {
@@ -47,8 +45,7 @@ public class MainActivity extends Activity {
 		@Override
 	    public void onPictureTaken(byte[] data, Camera camera) {
 
-			
-			File pictureFile = getOutputMediaFile();
+	        File pictureFile = getOutputMediaFile();
 	        if (pictureFile == null){
 	            Log.d(TAG, "Error creating media file, check storage permissions: " );
 	            return;
@@ -66,30 +63,21 @@ public class MainActivity extends Activity {
 	            Log.d(TAG, "Error accessing file: " + e.getMessage());
 	        }
 	       finally {
-	            	     	   
-	    	   camera = null;
+	           
+	    	     	   
 	    	   
-//	    	    try {
+	    	   camera = null;
+	    	    try {
 //	    	        camera.open(); // attempt to get a Camera instance
-//	    	        camera.release();
-//	    	    }
-//	    	    catch (Exception e){
-//	    	        // Camera is not available (in use or does not exist)
-//	    	    }
-//	    	
-//	    	   
+	    	        camera.release();
+	    	    }
+	    	    catch (Exception e){
+	    	        // Camera is not available (in use or does not exist)
+	    	    }
+	    	
+	    	   
 	           startActivity(new Intent(MainActivity.this, MainActivity.class));
 	           finish();
-	           
-	           Handler handler = new Handler(); 
-	           handler.postDelayed(new Runnable() { 
-	                public void run() { 
-	                     isinproc = false; 
-	                } 
-	           }, 500); 
-	           
-	           
-	           
 	         }
 	       
 	    }
@@ -135,16 +123,11 @@ public class MainActivity extends Activity {
 	{ 
 	   if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) { 
 	       
-		
-
+		   mCamera.takePicture(null, null, mPicture);
 		   
-		if (! isinproc) {
-			isinproc = true;
-			mCamera.takePicture(null, null, mPicture);
-			 
-		}
 		  
-		   return true;
+		   
+	       return true;
 	   } else {
 	       return super.onKeyDown(keyCode, event); 
 	   }
@@ -209,7 +192,9 @@ public class MainActivity extends Activity {
 	    String timeStamp =  df.format(new Date());
 	    //String timeStamp =  df.format(new Date());
 	    
-	   
+	    Random r = new Random();
+	    int i1=r.nextInt(1000);
+	    String s = String.valueOf(i1);
 	    
 	    File mediaFile;
 	    //mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_"+ timeStamp + ".jpg");
