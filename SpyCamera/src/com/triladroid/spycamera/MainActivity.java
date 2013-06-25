@@ -13,6 +13,7 @@ import java.util.Random;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Context;
@@ -36,7 +37,7 @@ public class MainActivity extends Activity {
 	private Uri fileUri;
 	private CameraPreview mPreview;
 	private Camera mCamera;
-	private boolean isinproc = false;
+	private static boolean isinproc = false;
 	
 	// this is where we write our pic to destination file
 	private PictureCallback mPicture = new PictureCallback() {
@@ -46,7 +47,6 @@ public class MainActivity extends Activity {
 		@Override
 	    public void onPictureTaken(byte[] data, Camera camera) {
 
-			isinproc = true;
 			
 			File pictureFile = getOutputMediaFile();
 	        if (pictureFile == null){
@@ -80,7 +80,16 @@ public class MainActivity extends Activity {
 //	    	   
 	           startActivity(new Intent(MainActivity.this, MainActivity.class));
 	           finish();
-	           isinproc = false;
+	           
+	           Handler handler = new Handler(); 
+	           handler.postDelayed(new Runnable() { 
+	                public void run() { 
+	                     isinproc = false; 
+	                } 
+	           }, 500); 
+	           
+	           
+	           
 	         }
 	       
 	    }
@@ -127,6 +136,7 @@ public class MainActivity extends Activity {
 	   if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) { 
 	       
 		
+
 		   
 		if (! isinproc) {
 			isinproc = true;
