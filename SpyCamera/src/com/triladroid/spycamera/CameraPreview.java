@@ -40,10 +40,14 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public void surfaceDestroyed(SurfaceHolder holder) {
     	
-    	 //mCamera.setPreviewCallback(null);
-    	 //mCamera.stopPreview();
-    	 //mCamera.release();
-    	 //mCamera = null;       
+    	 try {
+// 	        camera.open(); // attempt to get a Camera instance
+ 	        mCamera.release();
+ 	    }
+ 	    catch (Exception e){
+ 	        // Camera is not available (in use or does not exist)
+ 	    }
+ 	      
     	
         // empty. Take care of releasing the Camera preview in your activity.
     }

@@ -63,8 +63,19 @@ public class MainActivity extends Activity {
 	            Log.d(TAG, "Error accessing file: " + e.getMessage());
 	        }
 	       finally {
-	           //camera.release();
-	           //camera = null;
+	           
+	    	     	   
+	    	   
+	    	   camera = null;
+	    	    try {
+//	    	        camera.open(); // attempt to get a Camera instance
+	    	        camera.release();
+	    	    }
+	    	    catch (Exception e){
+	    	        // Camera is not available (in use or does not exist)
+	    	    }
+	    	
+	    	   
 	           startActivity(new Intent(MainActivity.this, MainActivity.class));
 	           finish();
 	         }
@@ -160,7 +171,7 @@ public class MainActivity extends Activity {
 	    // using Environment.getExternalStorageState() before doing this.
 	    //File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "SpyCamera");
 		
-    	File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "SpyCamera3"); 
+    	File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "SpyCamera"); 
 
 		// This location works best if you want the created images to be shared
 	    // between applications and persist after your app has been uninstalled.
