@@ -13,6 +13,7 @@ import java.util.Random;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Context;
@@ -36,16 +37,18 @@ public class MainActivity extends Activity {
 	private Uri fileUri;
 	private CameraPreview mPreview;
 	private Camera mCamera;
-	
+	private static boolean isinproc = false;
+
 	// this is where we write our pic to destination file
 	private PictureCallback mPicture = new PictureCallback() {
 
 		private static final String TAG = "MyActivity";
-		
+
 		@Override
 	    public void onPictureTaken(byte[] data, Camera camera) {
 
-	        File pictureFile = getOutputMediaFile();
+
+			File pictureFile = getOutputMediaFile();
 	        if (pictureFile == null){
 	            Log.d(TAG, "Error creating media file, check storage permissions: " );
 	            return;
@@ -63,28 +66,37 @@ public class MainActivity extends Activity {
 	            Log.d(TAG, "Error accessing file: " + e.getMessage());
 	        }
 	       finally {
-	           
-	    	     	   
-	    	   
+
 	    	   camera = null;
-	    	    try {
+
+//	    	    try {
 //	    	        camera.open(); // attempt to get a Camera instance
-	    	        camera.release();
-	    	    }
-	    	    catch (Exception e){
-	    	        // Camera is not available (in use or does not exist)
-	    	    }
-	    	
-	    	   
+//	    	        camera.release();
+//	    	    }
+//	    	    catch (Exception e){
+//	    	        // Camera is not available (in use or does not exist)
+//	    	    }
+//	    	
+//	    	   
 	           startActivity(new Intent(MainActivity.this, MainActivity.class));
 	           finish();
+
+	           Handler handler = new Handler(); 
+	           handler.postDelayed(new Runnable() { 
+	                public void run() { 
+	                     isinproc = false; 
+	                } 
+	           }, 500); 
+
+
+
 	         }
-	       
+
 	    }
 	};
-	
-	
-	
+
+
+
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,8 +114,8 @@ public class MainActivity extends Activity {
         //getWindow().setAttributes(params);
        
     }
-	
-		
+
+
 	@Override
     protected void onResume() {
         super.onResume();
@@ -117,22 +129,27 @@ public class MainActivity extends Activity {
         preview.addView(mPreview);     
       
     }
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) 
 	{ 
 	   if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) { 
-	       
-		   mCamera.takePicture(null, null, mPicture);
-		   
-		  
-		   
-	       return true;
+
+
+
+
+		if (! isinproc) {
+			isinproc = true;
+			mCamera.takePicture(null, null, mPicture);
+
+		}
+
+		   return true;
 	   } else {
 	       return super.onKeyDown(keyCode, event); 
 	   }
 	}
-	
+
 	 /** Check if this device has a camera */
     private boolean checkCameraHardware(Context context) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
@@ -143,7 +160,7 @@ public class MainActivity extends Activity {
             return false;
         }
     }
-	
+
     /** A safe way to get an instance of the Camera object. */
     public static Camera getCameraInstance(){
         Camera c = null;
@@ -157,7 +174,7 @@ public class MainActivity extends Activity {
         }
         return c; // returns null if camera is unavailable
     }
-	
+
 //	/** Create a file Uri for saving an image  */
 //	private static Uri getOutputMediaFileUri(int type){
 //		
@@ -170,13 +187,13 @@ public class MainActivity extends Activity {
 		// To be safe, you should check that the SDCard is mounted
 	    // using Environment.getExternalStorageState() before doing this.
 	    //File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "SpyCamera");
-		
+
     	File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "SpyCamera"); 
 
 		// This location works best if you want the created images to be shared
 	    // between applications and persist after your app has been uninstalled.
 	    // Create the storage directory if it does not exist
-	    
+
 	    if (! mediaStorageDir.exists()){
 	        if (! mediaStorageDir.mkdirs()){
 	            Log.d("SpyCamera", "failed to create directory");
@@ -184,33 +201,31 @@ public class MainActivity extends Activity {
 	            return null;
 	        }
 	    }
-	    
+
 	 // Create a media file name
 	   // Calendar c = Calendar.getInstance(); 
 	    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss");
 	    //String timeStamp =  df.format(c.getTime());
 	    String timeStamp =  df.format(new Date());
 	    //String timeStamp =  df.format(new Date());
-	    
-	    Random r = new Random();
-	    int i1=r.nextInt(1000);
-	    String s = String.valueOf(i1);
-	    
+
+
+
 	    File mediaFile;
 	    //mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_"+ timeStamp + ".jpg");
 	    //mediaFile = new File(mediaStorageDir.getPath() + "/IMG_"+ timeStamp + ".jpg");
-	    
+
 	    mediaFile = new File(mediaStorageDir.getPath()  + "/" + timeStamp + "IMG.jpg");
 	    return mediaFile;
 	}
-	
-	
+
+
 	@Override
     protected void onPause() {
         super.onPause();
         releaseCamera();              
     }
-	
+
 	private void releaseCamera(){
         if (mCamera != null){
         	
