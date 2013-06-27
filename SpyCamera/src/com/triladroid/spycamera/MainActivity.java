@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -135,8 +136,9 @@ public class MainActivity extends Activity {
 	{ 
 	   if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) { 
 
-
-
+		Context context = getApplicationContext();
+		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+		audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
 
 		if (! isinproc) {
 			isinproc = true;
@@ -168,6 +170,8 @@ public class MainActivity extends Activity {
             c = Camera.open(); // attempt to get a Camera instance
             Camera.Parameters parameters = c.getParameters();
             parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+            parameters.setJpegQuality(100);
         }
         catch (Exception e){
             // Camera is not available (in use or does not exist)
