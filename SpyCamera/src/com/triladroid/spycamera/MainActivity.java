@@ -15,21 +15,29 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -39,7 +47,9 @@ public class MainActivity extends Activity {
 	private CameraPreview mPreview;
 	private Camera mCamera;
 	private static boolean isinproc = false;
-
+	private SharedPreferences.OnSharedPreferenceChangeListener listener;  
+	private SharedPreferences prefs;
+	
 	// this is where we write our pic to destination file
 	private PictureCallback mPicture = new PictureCallback() {
 
@@ -113,9 +123,89 @@ public class MainActivity extends Activity {
         //WindowManager.LayoutParams params = getWindow().getAttributes();
         //params.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_OFF;
         //getWindow().setAttributes(params);
+        
+        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+			  public void onSharedPreferenceChanged(SharedPreferences prefsch, String key) {
+			    // Implementation
+				  
+				  if ( key.equalsIgnoreCase("backgroundpref"))
+				  {
+					
+					  String whatscreen = prefsch.getString("backgroundpref", "black");
+					  
+					  Toast.makeText(getBaseContext(),  "screen: " + whatscreen, Toast.LENGTH_LONG).show();
+					  
+					  View mlayout= findViewById(R.id.mainlayout);
+					  
+					  if (whatscreen.equalsIgnoreCase("black"))
+					  	{
+						  Toast.makeText(getBaseContext(), "The custom preference has been clicked", Toast.LENGTH_LONG).show();
+						  // set the color 
+						  mlayout.setBackgroundColor(Color.BLACK);
+					  	}
+					  else 
+					  	{
+						 
+						  Toast.makeText(getBaseContext(), "The custom preference has been clicked", Toast.LENGTH_LONG).show();
+						  // set the color 
+						  mlayout.setBackgroundColor(Color.TRANSPARENT);
+						 
+					  	}				  
+					  
+				  }
+				  
+				  
+			  }
+			};
+        
+        
        
     }
 
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+			  public void onSharedPreferenceChanged(SharedPreferences prefsch, String key) {
+			    // Implementation
+				  
+				  if ( key.equalsIgnoreCase("backgroundpref"))
+				  {
+					
+					  String whatscreen = prefsch.getString("backgroundpref", "black");
+					  
+					  Toast.makeText(getBaseContext(),  "screen: " + whatscreen, Toast.LENGTH_LONG).show();
+					  
+					  View mlayout= findViewById(R.id.mainlayout);
+					  
+					  if (whatscreen.equalsIgnoreCase("black"))
+					  	{
+						  Toast.makeText(getBaseContext(), "The custom preference has been clicked", Toast.LENGTH_LONG).show();
+						  // set the color 
+						  mlayout.setBackgroundColor(Color.BLACK);
+					  	}
+					  else 
+					  	{
+						 
+						  Toast.makeText(getBaseContext(), "The custom preference has been clicked", Toast.LENGTH_LONG).show();
+						  // set the color 
+						  mlayout.setBackgroundColor(Color.TRANSPARENT);
+						 
+					  	}				  
+					  
+				  }
+				  
+				  
+			  }
+			};
+
+			prefs.registerOnSharedPreferenceChangeListener(listener);
+		
+	}
+	
 
 	@Override
     protected void onResume() {
@@ -242,11 +332,29 @@ public class MainActivity extends Activity {
         }
     }
 
-    //@Override
-    //public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
- //       return true;
-  //  }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+         //Inflate the menu; this adds items to the action bar if it is present.
+        //getMenuInflater().inflate(R.menu.main, menu);
+        
+    	MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+    	
+    	return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent settingsActivity = new Intent(getBaseContext(), prefer.class);
+            	startActivity(settingsActivity);
+            return true;
+            
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     
 }

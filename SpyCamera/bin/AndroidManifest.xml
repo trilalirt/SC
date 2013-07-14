@@ -13,7 +13,7 @@
     
     <uses-sdk
         android:minSdkVersion="7"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="13" />
 
     <application
         android:allowBackup="true"
@@ -24,6 +24,7 @@
             android:name="com.triladroid.spycamera.MainActivity"
             android:label="@string/app_name" 
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.D1NoTitleDim"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,6 +32,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+        	android:name="com.triladroid.spycamera.prefer"
+        	
+        	>
+			</activity>
         
         <receiver android:name=".kres">
     <intent-filter>
