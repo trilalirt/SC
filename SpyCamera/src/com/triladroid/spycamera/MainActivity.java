@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.app.Activity;
@@ -49,6 +50,9 @@ public class MainActivity extends Activity {
 	private static boolean isinproc = false;
 	private SharedPreferences.OnSharedPreferenceChangeListener listener;  
 	private SharedPreferences prefs;
+	PowerManager pm;
+	PowerManager.WakeLock wl;
+	
 	
 	// this is where we write our pic to destination file
 	private PictureCallback mPicture = new PictureCallback() {
@@ -124,48 +128,35 @@ public class MainActivity extends Activity {
         //params.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_OFF;
         //getWindow().setAttributes(params);
         
-        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-			  public void onSharedPreferenceChanged(SharedPreferences prefsch, String key) {
-			    // Implementation
-				  
-				  if ( key.equalsIgnoreCase("backgroundpref"))
-				  {
-					
-					  String whatscreen = prefsch.getString("backgroundpref", "black");
-					  
-					  Toast.makeText(getBaseContext(),  "screen: " + whatscreen, Toast.LENGTH_LONG).show();
-					  
-					  View mlayout= findViewById(R.id.mainlayout);
-					  
-					  if (whatscreen.equalsIgnoreCase("black"))
-					  	{
-						  Toast.makeText(getBaseContext(), "The custom preference has been clicked", Toast.LENGTH_LONG).show();
-						  // set the color 
-						  mlayout.setBackgroundColor(Color.BLACK);
-					  	}
-					  else 
-					  	{
-						 
-						  Toast.makeText(getBaseContext(), "The custom preference has been clicked", Toast.LENGTH_LONG).show();
-						  // set the color 
-						  mlayout.setBackgroundColor(Color.TRANSPARENT);
-						 
-					  	}				  
-					  
-				  }
-				  
-				  
-			  }
-			};
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         
+        String whatscreen = preferences.getString("backgroundpref", "black");
+        View mlayout= findViewById(R.id.mainlayout);
         
-       
+        if (whatscreen.equalsIgnoreCase("black"))
+	  	{
+		  //Toast.makeText(getBaseContext(), "The custom preference has been clicked", Toast.LENGTH_LONG).show();
+		  // set the color 
+		  mlayout.setBackgroundColor(Color.BLACK);
+	  	}
+	  else 
+	  	{
+		 
+		  //Toast.makeText(getBaseContext(), "The custom preference has been clicked", Toast.LENGTH_LONG).show();
+		  // set the color 
+		  mlayout.setBackgroundColor(Color.TRANSPARENT);
+		 
+	  	}		
+        
     }
 
 	@Override
 	protected void onStart() {
 		super.onStart();
 		
+		pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
+		wl.acquire();
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -177,20 +168,20 @@ public class MainActivity extends Activity {
 					
 					  String whatscreen = prefsch.getString("backgroundpref", "black");
 					  
-					  Toast.makeText(getBaseContext(),  "screen: " + whatscreen, Toast.LENGTH_LONG).show();
+					  //Toast.makeText(getBaseContext(),  "screen: " + whatscreen, Toast.LENGTH_LONG).show();
 					  
 					  View mlayout= findViewById(R.id.mainlayout);
 					  
 					  if (whatscreen.equalsIgnoreCase("black"))
 					  	{
-						  Toast.makeText(getBaseContext(), "The custom preference has been clicked", Toast.LENGTH_LONG).show();
+						  //Toast.makeText(getBaseContext(), "The custom preference has been clicked", Toast.LENGTH_LONG).show();
 						  // set the color 
 						  mlayout.setBackgroundColor(Color.BLACK);
 					  	}
 					  else 
 					  	{
 						 
-						  Toast.makeText(getBaseContext(), "The custom preference has been clicked", Toast.LENGTH_LONG).show();
+						  //Toast.makeText(getBaseContext(), "The custom preference has been clicked", Toast.LENGTH_LONG).show();
 						  // set the color 
 						  mlayout.setBackgroundColor(Color.TRANSPARENT);
 						 
@@ -317,8 +308,22 @@ public class MainActivity extends Activity {
 	@Override
     protected void onPause() {
         super.onPause();
-        releaseCamera();              
-    }
+        releaseCamera(); 
+        
+        // sanity check for null as this is a public method
+            if (wl != null) {
+                Log.v("Spy camera:", "Releasing wakelock");
+                try {
+                        	wl.release();
+                } catch (Throwable th) {
+                    // ignoring this exception, probably wakeLock was already released
+                }
+            	} else {
+            		// should never happen during normal workflow
+            		Log.e("Spy camera:", "Wakelock reference is null");
+            }
+        }
+    
 
 	private void releaseCamera(){
         if (mCamera != null){
