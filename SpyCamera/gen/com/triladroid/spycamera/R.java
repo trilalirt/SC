@@ -73,6 +73,7 @@ public final class R {
          */
         public static final int AppTheme=0x7f080001;
         public static final int Theme_D1NoTitleDim=0x7f080002;
+        public static final int Theme_chan=0x7f080003;
     }
     public static final class xml {
         public static final int preferences=0x7f040000;
