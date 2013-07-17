@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+     <ListPreference
+                        android:title="Camera"
+                        android:summary="Use front or back camera for photo"
+                        android:key="campref"
+                        android:defaultValue="back"
+                        android:entries="@array/camArray"
+                        android:entryValues="@array/camValues" />
+      <ListPreference
+                        android:title="Background"
+                        android:summary="Use black or transparent background"
+                        android:key="backgroundpref"
+                        android:defaultValue="black"
+                        android:entries="@array/backArray"
+                        android:entryValues="@array/backValues" />
+
+</PreferenceScreen>
