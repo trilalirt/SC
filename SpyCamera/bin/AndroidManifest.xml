@@ -9,6 +9,8 @@
 	<uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-feature android:name="android.hardware.camera" />
 	
     
@@ -25,7 +27,7 @@
             android:name="com.triladroid.spycamera.MainActivity"
             android:label="@string/app_name" 
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.D1NoTitleDim" 
+            android:theme="@style/Theme.chan" 
    			
             >
             <intent-filter>
@@ -36,10 +38,11 @@
         </activity>
 
         <activity
-        	android:name="com.triladroid.spycamera.prefer"
-        	
-        	>
+        	android:name="com.triladroid.spycamera.prefer">
 			</activity>
+			
+        <activity android:name="com.google.ads.AdActivity"
+              android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         
         <receiver android:name=".kres">
     <intent-filter>
