@@ -16,6 +16,13 @@
                         android:entries="@array/backArray"
                         android:entryValues="@array/backValues" />
       
+       <Preference
+                android:title="Help"
+                android:summary="Brief instruction"
+                android:key="help"
+                
+                 />
+      
       <com.triladroid.spycamera.adprefer android:layout="@layout/ad_layout"/>
 
 </PreferenceScreen>

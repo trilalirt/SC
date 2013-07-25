@@ -41,6 +41,10 @@
         	android:name="com.triladroid.spycamera.prefer">
 			</activity>
 			
+        <activity android:name="com.triladroid.spycamera.aboutactivity">
+            
+        </activity>
+			
         <activity android:name="com.google.ads.AdActivity"
               android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         

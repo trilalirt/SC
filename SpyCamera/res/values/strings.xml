@@ -4,5 +4,19 @@
     <string name="app_name">SC</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-
+    <string name="about1">Phone screen will be black after launch (because this is Spy Camera and everyone around should think that your phone is off :)
+</string>
+	<string name="about2">--- Take photos by pressing volume up or volume down buttons
+</string>
+<string name="about3">--- To exit application press Back or Home button
+</string>
+<string name="about4">--- To enter Settings press Menu button
+</string>
+<string name="about41">--- Taken photos will be saved on the SD card at SpyCamera folder 
+</string>
+<string name="about5">Please, don’t downvote this app if something does not work, just write all your questions and suggestions to triladroid@gmail.com and I’ll try to help with all your problems.
+</string>
+    
+    
+    
 </resources>
