@@ -103,7 +103,7 @@ public class MainActivity extends Activity {
 	                public void run() { 
 	                     isinproc = false; 
 	                } 
-	           }, 500); 
+	           }, 1000); 
 
 
 

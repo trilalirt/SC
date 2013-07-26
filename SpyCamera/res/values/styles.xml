@@ -26,9 +26,8 @@
 
 </style>
 
- <style name="Theme.chan" parent="android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+ <style name="chan" parent="@android:style/Theme.Wallpaper.NoTitleBar.Fullscreen">
      
-    
      
  </style>   
     
