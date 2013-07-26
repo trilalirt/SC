@@ -18,8 +18,18 @@ public class prefer extends PreferenceActivity {
                 addPreferencesFromResource(R.xml.preferences);
                 // Get the custom preference
                 //ok
-                
-                                        
+        
+                Preference customPref = (Preference) findPreference("help");
+                customPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+
+                                        public boolean onPreferenceClick(Preference preference) {
+                                        	
+                                        	Intent myIntent = new Intent(getApplicationContext(), aboutactivity.class);
+                                            startActivity(myIntent);
+                                            return true;
+                                        }
+
+                                });                                 
         
                 
         }

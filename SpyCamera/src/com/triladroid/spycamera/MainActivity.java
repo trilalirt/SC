@@ -132,20 +132,6 @@ public class MainActivity extends Activity {
         
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         
-        Preference customPref = (Preference) findPreference("help");
-        customPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-                                public boolean onPreferenceClick(Preference preference) {
-                                	
-                                	Intent myIntent = new Intent(this, aboutactivity.class);
-                                    startActivity(myIntent);
-                                    return true;
-                                }
-
-                        }); 
-        
-        
-        
         
         String whatscreen = preferences.getString("backgroundpref", "black");
         View mlayout= findViewById(R.id.mainlayout);
