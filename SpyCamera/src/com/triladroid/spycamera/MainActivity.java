@@ -122,7 +122,25 @@ public class MainActivity extends Activity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
         setContentView(R.layout.activity_main);
-               
+        
+        
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		Boolean showhelp = preferences.getBoolean("checkboxhelp", true);
+        
+        if (showhelp)
+        {
+      
+		finish();
+		Intent myIntent1 = new Intent(this, aboutactivity.class);
+        Log.d("nas", "zapusk");
+        startActivity(myIntent1);
+            
+        }
+        
+        
+        
+        //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        
         // is there is a cam
         checkCameraHardware(getApplicationContext());
         
@@ -130,7 +148,8 @@ public class MainActivity extends Activity {
         //params.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_OFF;
         //getWindow().setAttributes(params);
         
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        
+        
         
         
         String whatscreen = preferences.getString("backgroundpref", "black");
@@ -149,7 +168,10 @@ public class MainActivity extends Activity {
 		  // set the color 
 		  mlayout.setBackgroundColor(Color.TRANSPARENT);
 		 
-	  	}		
+	  	}	
+        
+       
+        
         
     }
 
@@ -196,8 +218,10 @@ public class MainActivity extends Activity {
 			  }
 			};
 
+			
+			
 			prefs.registerOnSharedPreferenceChangeListener(listener);
-		
+	
 	}
 	
 
@@ -256,6 +280,7 @@ public class MainActivity extends Activity {
             parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
             parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
             parameters.setJpegQuality(100);
+            
         }
         catch (Exception e){
             // Camera is not available (in use or does not exist)

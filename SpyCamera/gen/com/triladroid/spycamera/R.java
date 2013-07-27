@@ -35,10 +35,10 @@ public final class R {
         public static final int button1=0x7f0a0007;
         public static final int camera_preview=0x7f0a0009;
         public static final int mainlayout=0x7f0a0008;
-        public static final int textView1=0x7f0a0000;
+        public static final int textView1=0x7f0a0002;
         public static final int textView2=0x7f0a0003;
-        public static final int textView3=0x7f0a0001;
-        public static final int textView4=0x7f0a0002;
+        public static final int textView3=0x7f0a0000;
+        public static final int textView4=0x7f0a0001;
         public static final int textView41=0x7f0a0005;
         public static final int textView5=0x7f0a0004;
     }

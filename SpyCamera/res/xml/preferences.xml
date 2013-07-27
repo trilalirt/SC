@@ -16,7 +16,13 @@
                         android:entries="@array/backArray"
                         android:entryValues="@array/backValues" />
       
-       <Preference
+      <CheckBoxPreference
+                        android:title="Show Help"
+                        android:defaultValue="true"
+                        android:summary="Show Help when Spy Camera is launched for the first time"
+                        android:key="checkboxhelp" />
+      
+      <Preference
                 android:title="Help"
                 android:summary="Brief instruction"
                 android:key="help"
