@@ -56,6 +56,7 @@ public class MainActivity extends Activity {
 	PowerManager.WakeLock wl;
 	
 	
+	
 	// this is where we write our pic to destination file
 	private PictureCallback mPicture = new PictureCallback() {
 
@@ -280,6 +281,10 @@ public class MainActivity extends Activity {
             parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
             parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
             parameters.setJpegQuality(100);
+            Camera.Size pictureSize=getBiggestPictureSize(parameters);
+            //parameters.setPreviewSize(pictureSize.width, pictureSize.height);
+            parameters.setPictureSize(pictureSize.width, pictureSize.height);
+            c.setParameters(parameters);
             
         }
         catch (Exception e){
@@ -389,5 +394,36 @@ public class MainActivity extends Activity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    
+    private static Camera.Size getBiggestPictureSize(Camera.Parameters parameters) {
+        
+    	Camera.Size result=null;
+
+    	
+    	
+        for (Camera.Size size : parameters.getSupportedPictureSizes()) {
+        	
+        	
+        	if (result == null) {
+            result=size;
+          }
+          else {
+            int resultArea=result.width * result.height;
+            int newArea=size.width * size.height;
+
+            //Log.i("test", "This is resultArea " + resultArea );
+            //Log.i("test", "This is newArea " + newArea );
+            
+            if (newArea >= resultArea) {
+              result=size;
+              Log.i("test", "This is width" + result.width);
+            }
+          }
+        }
+
+        Log.i("test", "This is width " + result.width +"This is  height" + result.height );
+        return(result);
+       
+      }
     
 }
